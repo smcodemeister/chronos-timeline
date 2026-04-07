@@ -653,16 +653,16 @@
 <div class="wrapper">
 
 <div id="key-banner">
-  <span class="key-label">⚿ Anthropic API Key</span>
-  <input id="keyInput" type="password" placeholder="sk-ant-api03-…" autocomplete="off" spellcheck="false">
+  <span class="key-label">⚿ Hugging Face API Token</span>
+  <input id="keyInput" type="password" placeholder="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" autocomplete="off" spellcheck="false">
   <button id="keySaveBtn">Save & Use</button>
-  <span class="key-note">Your key is stored only in this browser session — never sent anywhere except the Anthropic API.</span>
+  <span class="key-note">Free token from huggingface.co — create account → Settings → Access Tokens → New Token. No business agreement required.</span>
 </div>
 
 <header>
   <div class="brand">
     <h1>CHRONOS</h1>
-    <p>Lives in parallel — powered by AI</p>
+    <p>Lives in parallel — powered by Hugging Face</p>
   </div>
 
   <div class="search-block" style="position:relative">
@@ -681,7 +681,7 @@
 
   <div class="ai-badge">
     <span class="ai-dot"></span>
-    Powered by Claude AI
+    Powered by Hugging Face
   </div>
 
   <div class="chips-row" id="chips"></div>
@@ -770,13 +770,36 @@ $keySaveBtn.addEventListener('click', saveKey);
 $keyInput.addEventListener('keydown', e => { if (e.key === 'Enter') saveKey(); });
 updateKeyBanner();
 
-function getHeaders() {
-  return {
-    'Content-Type': 'application/json',
-    'x-api-key': API_KEY,
-    'anthropic-version': '2023-06-01',
-    'anthropic-dangerous-direct-browser-access': 'true'
-  };
+// ── Hugging Face Inference API helper ─────────────────────────────────────────
+const HF_MODEL = 'Qwen/Qwen2.5-72B-Instruct';
+
+async function hfCall(systemPrompt, userMessage, maxTokens = 1000) {
+  const url = `https://api-inference.huggingface.co/models/${HF_MODEL}/v1/chat/completions`;
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${API_KEY}`
+    },
+    body: JSON.stringify({
+      model: HF_MODEL,
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user',   content: userMessage  }
+      ],
+      max_tokens: maxTokens,
+      temperature: 0.3,
+      stream: false
+    })
+  });
+  if (!res.ok) {
+    const errBody = await res.json().catch(() => ({}));
+    const msg = errBody?.error?.message || errBody?.error || `HTTP ${res.status}`;
+    throw new Error(`API error: ${msg}`);
+  }
+  const data = await res.json();
+  const raw = data.choices?.[0]?.message?.content ?? '';
+  return raw.replace(/```json|```/gi, '').trim();
 }
 
 // ── Colour palette ─────────────────────────────────────────────────────────────
@@ -842,26 +865,8 @@ Rules:
 - Respond with JSON only — nothing else`;
 
 async function fetchPersonFromClaude(query) {
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: getHeaders(),
-    body: JSON.stringify({
-      model: 'claude-sonnet-4-6',
-      max_tokens: 1000,
-      system: SYSTEM_PROMPT,
-      messages: [{ role: 'user', content: query }]
-    })
-  });
-
-  if (!res.ok) {
-    const errBody = await res.json().catch(() => ({}));
-    const msg = errBody?.error?.message || `HTTP ${res.status}`;
-    throw new Error(`API error: ${msg}`);
-  }
-  const data = await res.json();
-  const raw  = data.content?.find(b => b.type === 'text')?.text ?? '';
-  const cleaned = raw.replace(/```json|```/gi, '').trim();
-  return JSON.parse(cleaned);
+  const raw = await hfCall(SYSTEM_PROMPT, query, 1000);
+  return JSON.parse(raw);
 }
 
 // ── World events lookup ────────────────────────────────────────────────────────
@@ -884,23 +889,10 @@ async function fetchWorldEvents(yMin, yMax) {
   updateWorldRowLoading(true);
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: getHeaders(),
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 1500,
-        system: WE_SYSTEM,
-        messages: [{ role: 'user', content: `Year range: ${yMin} to ${yMax}` }]
-      })
-    });
-
-    if (!res.ok || fetchId !== worldFetchId) return; // stale or failed
-    const data = await res.json();
-    const raw  = data.content?.find(b => b.type === 'text')?.text ?? '';
-    const json = JSON.parse(raw.replace(/```json|```/gi, '').trim());
-
-    if (fetchId !== worldFetchId) return; // another fetch started
+    const raw  = await hfCall(WE_SYSTEM, `Year range: ${yMin} to ${yMax}`, 1500);
+    if (fetchId !== worldFetchId) return;
+    const json = JSON.parse(raw);
+    if (fetchId !== worldFetchId) return;
     worldEvents = json.events || {};
     worldRange  = [yMin, yMax];
     renderWorldRow();
@@ -1369,25 +1361,9 @@ async function fetchSuggestions(force = false) {
   const yMax     = Math.max(...ordered.map(k => PEOPLE[k].death));
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: getHeaders(),
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 1200,
-        system: SUGGEST_SYSTEM,
-        messages: [{
-          role: 'user',
-          content: `People on timeline: ${names.join(', ')}. Era: ${yMin}–${yMax}.`
-        }]
-      })
-    });
-
+    const raw  = await hfCall(SUGGEST_SYSTEM, `People on timeline: ${names.join(', ')}. Era: ${yMin}–${yMax}.`, 1200);
     if (fetchId !== suggestFetchId) return;
-    const data = await res.json();
-    const raw  = data.content?.find(b => b.type === 'text')?.text ?? '';
-    const json = JSON.parse(raw.replace(/```json|```/gi, '').trim());
-
+    const json = JSON.parse(raw);
     if (fetchId !== suggestFetchId) return;
     renderSuggestCards(json.suggestions || []);
   } catch (e) {
