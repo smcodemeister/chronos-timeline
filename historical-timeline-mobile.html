@@ -653,16 +653,16 @@
 <div class="wrapper">
 
 <div id="key-banner">
-  <span class="key-label">⚿ Hugging Face API Token</span>
-  <input id="keyInput" type="password" placeholder="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" autocomplete="off" spellcheck="false">
+  <span class="key-label">⚿ Anthropic API Key</span>
+  <input id="keyInput" type="password" placeholder="Paste your key from console.anthropic.com…" autocomplete="off" spellcheck="false">
   <button id="keySaveBtn">Save & Use</button>
-  <span class="key-note">Free token from huggingface.co — create account → Settings → Access Tokens → New Token. No business agreement required.</span>
+  <span class="key-note">Get your key at console.anthropic.com → API Keys → Create Key. Stored in this browser session only.</span>
 </div>
 
 <header>
   <div class="brand">
     <h1>CHRONOS</h1>
-    <p>Lives in parallel — powered by Hugging Face</p>
+    <p>Lives in parallel — powered by Claude AI</p>
   </div>
 
   <div class="search-block" style="position:relative">
@@ -681,7 +681,7 @@
 
   <div class="ai-badge">
     <span class="ai-dot"></span>
-    Powered by Hugging Face
+    Powered by Claude AI
   </div>
 
   <div class="chips-row" id="chips"></div>
@@ -770,35 +770,30 @@ $keySaveBtn.addEventListener('click', saveKey);
 $keyInput.addEventListener('keydown', e => { if (e.key === 'Enter') saveKey(); });
 updateKeyBanner();
 
-// ── Hugging Face Inference API helper ─────────────────────────────────────────
-const HF_MODEL = 'Qwen/Qwen2.5-72B-Instruct';
-
+// ── Anthropic API helper ───────────────────────────────────────────────────────
 async function hfCall(systemPrompt, userMessage, maxTokens = 1000) {
-  const url = `https://api-inference.huggingface.co/models/${HF_MODEL}/v1/chat/completions`;
-  const res = await fetch(url, {
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${API_KEY}`
+      'x-api-key': API_KEY,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true'
     },
     body: JSON.stringify({
-      model: HF_MODEL,
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user',   content: userMessage  }
-      ],
+      model: 'claude-haiku-4-5-20251001',
       max_tokens: maxTokens,
-      temperature: 0.3,
-      stream: false
+      system: systemPrompt,
+      messages: [{ role: 'user', content: userMessage }]
     })
   });
   if (!res.ok) {
     const errBody = await res.json().catch(() => ({}));
-    const msg = errBody?.error?.message || errBody?.error || `HTTP ${res.status}`;
+    const msg = errBody?.error?.message || `HTTP ${res.status}`;
     throw new Error(`API error: ${msg}`);
   }
   const data = await res.json();
-  const raw = data.choices?.[0]?.message?.content ?? '';
+  const raw = data.content?.find(b => b.type === 'text')?.text ?? '';
   return raw.replace(/```json|```/gi, '').trim();
 }
 
@@ -933,7 +928,7 @@ function showQuerySuggestion(q) {
 // ── Add person ─────────────────────────────────────────────────────────────────
 async function addPerson(query) {
   if (!query.trim()) return;
-  if (!API_KEY || API_KEY === 'YOUR_API_KEY_HERE') {
+  if (!API_KEY || API_KEY === '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') {
     $keyBanner.classList.remove('hidden');
     $keyInput.focus();
     showToast('Please enter your Anthropic API key first');
