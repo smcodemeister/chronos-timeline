@@ -43,10 +43,7 @@
     padding: 28px 48px 20px;
     border-bottom: 1px solid var(--border);
     background: linear-gradient(180deg, #10131c 0%, transparent 100%);
-    display: flex;
-    align-items: flex-start;
-    gap: 36px;
-    flex-wrap: wrap;
+    display: flex; align-items: flex-start; gap: 36px; flex-wrap: wrap;
   }
   .brand { flex: 0 0 auto; }
   .brand h1 {
@@ -57,25 +54,17 @@
   .brand p { font-style: italic; color: var(--muted); font-size: .88rem; margin-top: 4px; }
 
   /* ── Search ── */
-  .search-block { flex: 1; min-width: 260px; max-width: 500px; }
+  .search-block { flex: 1; min-width: 260px; max-width: 500px; position: relative; }
   .ctrl-label {
-    display: block;
-    font-family: 'Cinzel', serif;
-    font-size: .62rem; letter-spacing: .14em;
-    color: var(--gold-dim); text-transform: uppercase;
-    margin-bottom: 7px;
+    display: block; font-family: 'Cinzel', serif;
+    font-size: .62rem; letter-spacing: .14em; color: var(--gold-dim);
+    text-transform: uppercase; margin-bottom: 7px;
   }
-  .search-row {
-    display: flex; gap: 8px;
-  }
+  .search-row { display: flex; gap: 8px; }
   .search-inner {
-    flex: 1;
-    display: flex; align-items: center;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    padding: 0 12px;
-    transition: border-color .2s;
+    flex: 1; display: flex; align-items: center;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 3px; padding: 0 12px; transition: border-color .2s;
   }
   .search-inner:focus-within { border-color: var(--gold); }
   .search-icon { color: var(--muted); margin-right: 8px; font-size: .95rem; }
@@ -85,25 +74,20 @@
     font-size: 1rem; padding: 9px 0;
   }
   #searchInput::placeholder { color: var(--muted); }
-
   .spinner {
     width: 14px; height: 14px;
     border: 2px solid var(--border); border-top-color: var(--gold);
-    border-radius: 50%;
-    animation: spin .7s linear infinite;
+    border-radius: 50%; animation: spin .7s linear infinite;
     flex-shrink: 0; display: none;
   }
   .spinner.on { display: block; }
   @keyframes spin { to { transform: rotate(360deg); } }
 
   #searchBtn {
-    font-family: 'Cinzel', serif;
-    font-size: .68rem; letter-spacing: .12em; text-transform: uppercase;
-    color: var(--bg); background: var(--gold);
-    border: none; border-radius: 3px;
-    padding: 0 20px; cursor: pointer;
-    transition: background .2s;
-    white-space: nowrap;
+    font-family: 'Cinzel', serif; font-size: .68rem; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--bg); background: var(--gold);
+    border: none; border-radius: 3px; padding: 0 20px; cursor: pointer;
+    transition: background .2s; white-space: nowrap;
   }
   #searchBtn:hover { background: #d4b560; }
   #searchBtn:disabled { opacity: .5; cursor: not-allowed; }
@@ -111,19 +95,40 @@
   /* ── AI badge ── */
   .ai-badge {
     display: flex; align-items: center; gap: 6px;
-    font-family: 'Cinzel', serif;
-    font-size: .56rem; letter-spacing: .1em;
-    color: var(--muted);
-    border: 1px solid var(--border);
-    border-radius: 2px; padding: 4px 10px;
-    align-self: flex-end; margin-bottom: 1px;
+    font-family: 'Cinzel', serif; font-size: .56rem; letter-spacing: .1em;
+    color: var(--muted); border: 1px solid var(--border);
+    border-radius: 2px; padding: 4px 10px; align-self: flex-end; margin-bottom: 1px;
   }
   .ai-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
 
-  /* ── Chips ── */
-  .chips-row {
-    flex: 1 1 100%; display: flex; flex-wrap: wrap; gap: 7px; padding-top: 4px;
+  /* ── Suggestions dropdown ── */
+  #suggestions {
+    position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 3px; z-index: 200; display: none;
+    box-shadow: 0 8px 32px rgba(0,0,0,.55); overflow: hidden;
   }
+  #suggestions.on { display: block; }
+  .sug-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 14px; cursor: pointer;
+    border-bottom: 1px solid var(--border); transition: background .12s;
+  }
+  .sug-item:last-child { border-bottom: none; }
+  .sug-item:hover { background: #22273a; }
+  .sug-item.dimmed { opacity: .4; pointer-events: none; }
+  .sug-text { flex: 1; min-width: 0; }
+  .sug-name { font-family: 'Playfair Display', serif; font-size: .95rem; }
+  .sug-desc { font-size: .78rem; color: var(--muted); font-style: italic; margin-top: 1px; }
+  .sug-btn {
+    font-family: 'Cinzel', serif; font-size: .56rem; letter-spacing: .1em;
+    color: var(--gold-dim); border: 1px solid var(--border);
+    border-radius: 2px; padding: 2px 8px; flex-shrink: 0; transition: color .15s, border-color .15s;
+  }
+  .sug-item:hover .sug-btn { color: var(--gold); border-color: var(--gold); }
+
+  /* ── Chips ── */
+  .chips-row { flex: 1 1 100%; display: flex; flex-wrap: wrap; gap: 7px; padding-top: 4px; }
   .chips-row:empty { display: none; }
   .chip {
     display: inline-flex; align-items: center; gap: 6px;
@@ -135,9 +140,8 @@
   .chip-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
   .chip-years { color: var(--muted); font-size: .76rem; }
   .chip-x {
-    background: none; border: none; color: var(--muted);
-    font-size: .8rem; cursor: pointer; padding: 0 0 0 3px;
-    transition: color .15s; line-height: 1;
+    background: none; border: none; color: var(--muted); font-size: .8rem;
+    cursor: pointer; padding: 0 0 0 3px; transition: color .15s; line-height: 1;
   }
   .chip-x:hover { color: var(--red); }
   .chip-loading {
@@ -167,36 +171,64 @@
   }
   #insight span { color: var(--gold); font-style: normal; }
 
+  /* ── Suggestions panel ── */
+  #suggest-panel { display: none; border-bottom: 1px solid var(--border); background: var(--surface); }
+  #suggest-panel.on { display: block; }
+  .suggest-header { display: flex; align-items: center; gap: 12px; padding: 10px 48px 0; }
+  .suggest-title { font-family: 'Cinzel', serif; font-size: .62rem; letter-spacing: .14em; text-transform: uppercase; color: var(--gold-dim); }
+  .suggest-refresh {
+    background: none; border: 1px solid var(--border); border-radius: 2px; color: var(--muted);
+    font-family: 'Cinzel', serif; font-size: .56rem; letter-spacing: .1em; text-transform: uppercase;
+    padding: 2px 9px; cursor: pointer; transition: color .15s, border-color .15s;
+  }
+  .suggest-refresh:hover { color: var(--gold); border-color: var(--gold); }
+  .suggest-refresh:disabled { opacity: .4; cursor: default; }
+  .suggest-spinner { width: 11px; height: 11px; border: 1.5px solid var(--border); border-top-color: var(--gold); border-radius: 50%; animation: spin .7s linear infinite; display: none; }
+  .suggest-spinner.on { display: block; }
+  .suggest-cards { display: flex; gap: 10px; padding: 10px 48px 14px; overflow-x: auto; overflow-y: visible; }
+  .suggest-cards::-webkit-scrollbar { height: 4px; }
+  .suggest-cards::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+  .suggest-card {
+    flex-shrink: 0; width: 172px; background: var(--card); border: 1px solid var(--border);
+    border-radius: 4px; padding: 11px 13px; cursor: pointer;
+    transition: border-color .18s, transform .18s; display: flex; flex-direction: column; gap: 5px; animation: cardIn .2s ease;
+  }
+  @keyframes cardIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
+  .suggest-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+  .suggest-card.added { opacity: .4; pointer-events: none; }
+  .sc-name { font-family: 'Playfair Display', serif; font-size: .92rem; line-height: 1.2; color: var(--text); }
+  .sc-years { font-family: 'EB Garamond', serif; font-size: .75rem; color: var(--gold-dim); }
+  .sc-desc { font-family: 'EB Garamond', serif; font-size: .78rem; color: var(--muted); font-style: italic; line-height: 1.3; flex: 1; }
+  .sc-reason { font-family: 'EB Garamond', serif; font-size: .72rem; color: var(--muted); line-height: 1.3; border-top: 1px solid var(--border); padding-top: 5px; margin-top: 2px; }
+  .sc-add { font-family: 'Cinzel', serif; font-size: .58rem; letter-spacing: .1em; color: var(--gold-dim); border: 1px solid var(--border); border-radius: 2px; padding: 3px 8px; background: none; cursor: pointer; align-self: flex-start; transition: color .15s, border-color .15s; }
+  .suggest-card:hover .sc-add { color: var(--gold); border-color: var(--gold); }
+  .suggest-card.skeleton { pointer-events: none; }
+  .skeleton-line { border-radius: 2px; background: var(--border); animation: shimmer 1.4s ease-in-out infinite alternate; }
+  @keyframes shimmer { from { opacity:.3; } to { opacity:.7; } }
+
   /* ── Timeline ── */
   #timeline-container { padding: 32px 0 220px; overflow-x: auto; }
   #timeline-wrap { padding: 0 48px; min-width: max-content; }
   table { border-collapse: collapse; }
 
   thead th {
-    font-family: 'EB Garamond', serif; font-size: .72rem;
-    color: var(--muted); font-weight: 400;
-    text-align: center; padding: 0;
-    width: var(--cell-w); min-width: var(--cell-w);
-    height: 24px; vertical-align: bottom; white-space: nowrap;
-    border-bottom: 1px solid var(--border);
+    font-family: 'EB Garamond', serif; font-size: .72rem; color: var(--muted); font-weight: 400;
+    text-align: center; padding: 0; width: var(--cell-w); min-width: var(--cell-w);
+    height: 24px; vertical-align: bottom; white-space: nowrap; border-bottom: 1px solid var(--border);
   }
   thead th.decade { color: var(--gold-dim); font-weight: 500; }
-  thead th.ev-yr  { color: var(--gold) !important; font-weight: 500; }
-
+  thead th.ev-yr { color: var(--gold) !important; font-weight: 500; }
   th.name-col {
-    width: var(--row-label); min-width: var(--row-label);
-    text-align: left; font-family: 'Cinzel', serif;
-    font-size: .62rem; letter-spacing: .1em;
-    color: var(--gold-dim); text-transform: uppercase;
-    padding-left: 0; border-bottom: 1px solid var(--border);
-    background: var(--bg);
+    width: var(--row-label); min-width: var(--row-label); text-align: left;
+    font-family: 'Cinzel', serif; font-size: .62rem; letter-spacing: .1em;
+    color: var(--gold-dim); text-transform: uppercase; padding-left: 0;
+    border-bottom: 1px solid var(--border); background: var(--bg);
   }
 
   td.name-cell {
     font-family: 'Playfair Display', serif; font-size: .95rem; font-style: italic;
     color: var(--text); padding: 0; height: var(--cell-h); white-space: nowrap;
-    background: var(--bg); position: sticky; left: 0; z-index: 10;
-    border-right: 1px solid var(--border);
+    background: var(--bg); position: sticky; left: 0; z-index: 10; border-right: 1px solid var(--border);
   }
   .name-inner { display: flex; align-items: center; gap: 10px; padding: 0 14px 0 0; height: 100%; }
   .name-stripe { width: 3px; height: 100%; flex-shrink: 0; }
@@ -213,11 +245,9 @@
   td.cell:hover { outline: 1px solid var(--gold); outline-offset: -1px; opacity: 1 !important; z-index: 5; }
 
   .ev-star {
-    position: absolute; top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
     font-size: 13px; line-height: 1; color: var(--red);
-    text-shadow: 0 0 6px rgba(232,48,74,.65);
-    cursor: pointer; z-index: 5; user-select: none;
+    text-shadow: 0 0 6px rgba(232,48,74,.65); cursor: pointer; z-index: 5; user-select: none;
     transition: transform .12s, text-shadow .12s;
   }
   .ev-star:hover { transform: translate(-50%,-50%) scale(1.45); text-shadow: 0 0 10px rgba(232,48,74,.9); }
@@ -225,71 +255,41 @@
   tr.spacer td { height: 10px; }
 
   /* ── World Events row ── */
-  tr.world-row td.we-name-cell {
-    font-family: 'Cinzel', serif;
-    font-size: .68rem; letter-spacing: .08em; text-transform: uppercase;
-    color: var(--gold);
-    padding: 0; height: var(--cell-h); white-space: nowrap;
-    background: var(--surface);
-    position: sticky; left: 0; z-index: 10;
-    border-right: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
+  tr.world-row td { height: 44px; }
+  tr.world-spacer td { height: 6px; background: var(--surface); }
+  td.we-name-cell {
+    background: var(--bg); position: sticky; left: 0; z-index: 10;
+    border-right: 1px solid var(--border); height: 44px; white-space: nowrap;
   }
-  .we-name-inner {
-    display: flex; align-items: center; gap: 10px;
-    padding: 0 14px 0 0; height: 100%;
+  .we-name-inner { display: flex; align-items: center; gap: 10px; padding: 0 14px 0 0; height: 100%; }
+  .we-stripe { width: 3px; height: 100%; flex-shrink: 0; background: linear-gradient(180deg, var(--gold) 0%, var(--gold-dim) 100%); }
+  .we-name-inner > div > div:first-child { font-family: 'Cinzel', serif; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--gold); }
+  .we-sub { font-family: 'EB Garamond', serif; font-size: .74rem; color: var(--muted); font-style: italic; display: block; margin-top: 1px; }
+  td.we-cell {
+    width: var(--cell-w); min-width: var(--cell-w); height: 44px;
+    background: #12141c; border-right: 1px solid transparent;
+    border-top: 1px solid #1e2230; border-bottom: 1px solid #1e2230; position: relative;
   }
-  .we-stripe {
-    width: 3px; height: 100%; flex-shrink: 0;
-    background: linear-gradient(180deg, var(--gold) 0%, var(--gold-dim) 100%);
-  }
-  .we-sub { font-size: .62rem; color: var(--gold-dim); display: block; margin-top: 2px; font-style: italic; letter-spacing: 0; }
-
-  tr.world-row td.we-cell {
-    width: var(--cell-w); min-width: var(--cell-w); height: var(--cell-h);
-    background: var(--surface);
-    border-right: 1px solid transparent;
-    border-bottom: 1px solid var(--border);
-    position: relative;
-  }
-  tr.world-row td.we-cell.dec-line { border-right: 1px solid #2a2f4070; }
-  tr.world-row td.we-cell:hover { outline: 1px solid var(--gold); outline-offset: -1px; z-index: 5; }
-
+  td.we-cell.dec-line { border-right: 1px solid #2a2f4070; }
   .we-diamond {
     position: absolute; top: 50%; left: 50%;
     transform: translate(-50%, -50%) rotate(45deg);
-    width: 9px; height: 9px;
-    background: var(--gold);
-    box-shadow: 0 0 5px rgba(201,168,76,.7);
-    cursor: pointer; z-index: 5;
+    width: 9px; height: 9px; background: var(--gold);
+    box-shadow: 0 0 6px rgba(201,168,76,.6); cursor: pointer; z-index: 5;
     transition: transform .12s, box-shadow .12s;
   }
-  .we-diamond:hover {
-    transform: translate(-50%, -50%) rotate(45deg) scale(1.5);
-    box-shadow: 0 0 10px rgba(201,168,76,.9);
-  }
-
-  /* Loading shimmer on world events row */
+  .we-diamond:hover { transform: translate(-50%, -50%) rotate(45deg) scale(1.5); box-shadow: 0 0 10px rgba(201,168,76,.9); }
   .we-loading {
-    position: absolute; top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 6px; height: 6px; border-radius: 50%;
-    background: var(--gold-dim);
-    opacity: 0;
-    animation: wePulse 1.4s ease-in-out infinite;
-    animation-delay: var(--d, 0s);
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 6px; height: 6px; border-radius: 50%; background: var(--border);
+    animation: wePulse 1.4s ease-in-out infinite; animation-delay: var(--d, 0s);
   }
-  @keyframes wePulse {
-    0%,100% { opacity: 0; } 50% { opacity: .5; }
-  }
-
-  tr.world-spacer td { height: 6px; background: var(--surface); }
+  @keyframes wePulse { 0%,100%{opacity:.2} 50%{opacity:.6} }
 
   /* ── Tooltip ── */
   #tooltip {
-    position: fixed; background: var(--card);
-    border: 1px solid var(--gold-dim); padding: 10px 14px;
-    border-radius: 4px; font-size: .88rem; pointer-events: none;
+    position: fixed; background: var(--card); border: 1px solid var(--gold-dim);
+    padding: 10px 14px; border-radius: 4px; font-size: .88rem; pointer-events: none;
     opacity: 0; transition: opacity .12s; max-width: 270px; z-index: 999; line-height: 1.5;
   }
   #tooltip.on { opacity: 1; }
@@ -299,373 +299,71 @@
   #empty { text-align: center; padding: 80px 48px; color: var(--muted); font-style: italic; font-size: 1.05rem; }
   #empty .hint { margin-top: 12px; font-size: .86rem; opacity: .6; }
 
-  /* ── Suggestions dropdown ── */
-  #suggestions {
-    position: absolute; top: calc(100% + 4px); left: 0; right: 0;
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: 3px; z-index: 200; display: none;
-    box-shadow: 0 8px 32px rgba(0,0,0,.55); overflow: hidden;
-  }
-  #suggestions.on { display: block; }
-  .sug-item {
-    display: flex; align-items: center; gap: 10px;
-    padding: 9px 14px; cursor: pointer;
-    border-bottom: 1px solid var(--border); transition: background .12s;
-  }
-  .sug-item:last-child { border-bottom: none; }
-  .sug-item:hover { background: #22273a; }
-  .sug-item.dimmed { opacity: .4; pointer-events: none; }
-  .sug-text { flex: 1; min-width: 0; }
-  .sug-name { font-family: 'Playfair Display', serif; font-size: .95rem; }
-  .sug-desc { font-size: .78rem; color: var(--muted); font-style: italic; margin-top: 1px; }
-  .sug-btn {
-    font-family: 'Cinzel', serif; font-size: .56rem; letter-spacing: .1em;
-    color: var(--gold-dim); border: 1px solid var(--border);
-    border-radius: 2px; padding: 2px 8px; flex-shrink: 0;
-    transition: color .15s, border-color .15s;
-  }
-  .sug-item:hover .sug-btn { color: var(--gold); border-color: var(--gold); }
-
-  /* ── World Events row ── */
-  tr.world-row td { height: 44px; }
-  tr.world-spacer td { height: 14px; border-bottom: 1px solid var(--border); }
-
-  td.we-name-cell {
-    background: var(--bg);
-    position: sticky; left: 0; z-index: 10;
-    border-right: 1px solid var(--border);
-    height: 44px;
-    white-space: nowrap;
-  }
-  .we-name-inner {
-    display: flex; align-items: center; gap: 10px;
-    padding: 0 14px 0 0; height: 100%;
-  }
-  .we-stripe {
-    width: 3px; height: 100%; flex-shrink: 0;
-    background: linear-gradient(180deg, var(--gold) 0%, var(--gold-dim) 100%);
-  }
-  .we-name-inner > div > div:first-child {
-    font-family: 'Cinzel', serif;
-    font-size: .72rem; letter-spacing: .1em;
-    text-transform: uppercase; color: var(--gold);
-  }
-  .we-sub {
-    font-family: 'EB Garamond', serif;
-    font-size: .74rem; color: var(--muted);
-    font-style: italic; display: block; margin-top: 1px;
-  }
-
-  td.we-cell {
-    width: var(--cell-w); min-width: var(--cell-w);
-    height: 44px;
-    background: #12141c;
-    border-right: 1px solid transparent;
-    border-top: 1px solid #1e2230;
-    border-bottom: 1px solid #1e2230;
-    position: relative;
-  }
-  td.we-cell.dec-line { border-right: 1px solid #2a2f4070; }
-
-  /* Gold diamond marker for world events */
-  .we-diamond {
-    position: absolute; top: 50%; left: 50%;
-    transform: translate(-50%, -50%) rotate(45deg);
-    width: 9px; height: 9px;
-    background: var(--gold);
-    box-shadow: 0 0 6px rgba(201,168,76,.6);
-    cursor: pointer; z-index: 5;
-    transition: transform .12s, box-shadow .12s;
-  }
-  .we-diamond:hover {
-    transform: translate(-50%, -50%) rotate(45deg) scale(1.5);
-    box-shadow: 0 0 10px rgba(201,168,76,.9);
-  }
-
-  /* Shimmer placeholders while loading */
-  .we-loading {
-    position: absolute; top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 6px; height: 6px; border-radius: 50%;
-    background: var(--border);
-    animation: wePulse 1.4s ease-in-out infinite;
-    animation-delay: var(--d, 0s);
-  }
-  @keyframes wePulse { 0%,100%{opacity:.2} 50%{opacity:.6} }
-
-  /* ── People suggestion panel ── */
-  #suggest-panel {
-    display: none;
-    border-bottom: 1px solid var(--border);
-    background: var(--surface);
-  }
-  #suggest-panel.on { display: block; }
-
-  .suggest-header {
-    display: flex; align-items: center; gap: 12px;
-    padding: 10px 48px 0;
-  }
-  .suggest-title {
-    font-family: 'Cinzel', serif;
-    font-size: .62rem; letter-spacing: .14em;
-    text-transform: uppercase; color: var(--gold-dim);
-  }
-  .suggest-refresh {
-    background: none; border: 1px solid var(--border);
-    border-radius: 2px; color: var(--muted);
-    font-family: 'Cinzel', serif; font-size: .56rem;
-    letter-spacing: .1em; text-transform: uppercase;
-    padding: 2px 9px; cursor: pointer;
-    transition: color .15s, border-color .15s;
-  }
-  .suggest-refresh:hover { color: var(--gold); border-color: var(--gold); }
-  .suggest-refresh:disabled { opacity: .4; cursor: default; }
-  .suggest-spinner {
-    width: 11px; height: 11px;
-    border: 1.5px solid var(--border); border-top-color: var(--gold);
-    border-radius: 50%;
-    animation: spin .7s linear infinite;
-    display: none;
-  }
-  .suggest-spinner.on { display: block; }
-
-  .suggest-cards {
-    display: flex; gap: 10px;
-    padding: 10px 48px 14px;
-    overflow-x: auto; overflow-y: visible;
-  }
-  .suggest-cards::-webkit-scrollbar { height: 4px; }
-  .suggest-cards::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-
-  .suggest-card {
-    flex-shrink: 0;
-    width: 172px;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 11px 13px;
-    cursor: pointer;
-    transition: border-color .18s, transform .18s;
-    display: flex; flex-direction: column; gap: 5px;
-    animation: cardIn .2s ease;
-  }
-  @keyframes cardIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
-  .suggest-card:hover { border-color: var(--gold); transform: translateY(-2px); }
-  .suggest-card.added { opacity: .4; pointer-events: none; }
-
-  .sc-name {
-    font-family: 'Playfair Display', serif;
-    font-size: .92rem; line-height: 1.2; color: var(--text);
-  }
-  .sc-years {
-    font-family: 'EB Garamond', serif;
-    font-size: .75rem; color: var(--gold-dim);
-  }
-  .sc-desc {
-    font-family: 'EB Garamond', serif;
-    font-size: .78rem; color: var(--muted);
-    font-style: italic; line-height: 1.3; flex: 1;
-  }
-  .sc-reason {
-    font-family: 'EB Garamond', serif;
-    font-size: .72rem; color: var(--muted);
-    line-height: 1.3; border-top: 1px solid var(--border);
-    padding-top: 5px; margin-top: 2px;
-  }
-  .sc-add {
-    font-family: 'Cinzel', serif;
-    font-size: .58rem; letter-spacing: .1em;
-    color: var(--gold-dim); border: 1px solid var(--border);
-    border-radius: 2px; padding: 3px 8px;
-    background: none; cursor: pointer; align-self: flex-start;
-    transition: color .15s, border-color .15s;
-  }
-  .suggest-card:hover .sc-add { color: var(--gold); border-color: var(--gold); }
-
-  /* Shimmer skeleton cards */
-  .suggest-card.skeleton { pointer-events: none; }
-  .skeleton-line {
-    border-radius: 2px; background: var(--border);
-    animation: shimmer 1.4s ease-in-out infinite alternate;
-  }
-  @keyframes shimmer { from { opacity:.3; } to { opacity:.7; } }
-
-  /* ── API key banner ── */
-  #key-banner {
-    background: #1a1020;
-    border-bottom: 1px solid #5a3060;
-    padding: 12px 48px;
-    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
-  }
-  #key-banner.hidden { display: none; }
-  .key-label {
-    font-family: 'Cinzel', serif;
-    font-size: .62rem; letter-spacing: .12em;
-    text-transform: uppercase; color: #c084fc; white-space: nowrap;
-  }
-  #keyInput {
-    flex: 1; min-width: 180px;
-    background: #0d0a14; border: 1px solid #5a3060;
-    border-radius: 3px; color: var(--text);
-    font-family: monospace; font-size: .82rem;
-    padding: 7px 10px; outline: none; transition: border-color .2s;
-  }
-  #keyInput:focus { border-color: #c084fc; }
-  #keyInput::placeholder { color: #5a4060; }
-  #keySaveBtn {
-    font-family: 'Cinzel', serif; font-size: .62rem;
-    letter-spacing: .1em; text-transform: uppercase;
-    background: #7e22ce; color: #f0e6ff;
-    border: none; border-radius: 3px;
-    padding: 7px 16px; cursor: pointer; transition: background .2s;
-  }
-  #keySaveBtn:hover { background: #9333ea; }
-  .key-note { font-size: .76rem; color: #9060a0; font-style: italic; flex: 1 1 100%; }
-
-  /* ── Scrollbar (desktop) ── */
+  /* ── Scrollbar ── */
   #timeline-container::-webkit-scrollbar { height: 6px; }
   #timeline-container::-webkit-scrollbar-track { background: var(--surface); }
   #timeline-container::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
-  /* ═══════════════════════════════════════════════
-     MOBILE — ≤ 680px
-  ═══════════════════════════════════════════════ */
+  /* ═══════════════════════════════════
+     MOBILE ≤ 680px
+  ═══════════════════════════════════ */
   @media (max-width: 680px) {
-    :root {
-      --row-label: 120px;
-      --cell-w:    18px;
-      --cell-h:    36px;
-    }
-
-    /* Header: stack vertically, compact */
-    header {
-      padding: 16px 16px 14px;
-      gap: 14px;
-      flex-direction: column;
-      align-items: stretch;
-    }
-
-    /* Brand: smaller on mobile */
-    .brand h1 { font-size: 1.5rem; letter-spacing: .1em; }
-    .brand p   { font-size: .8rem; }
-
-    /* Search block: full width */
+    :root { --row-label: 120px; --cell-w: 18px; --cell-h: 36px; }
+    header { padding: 16px 16px 14px; gap: 14px; flex-direction: column; align-items: stretch; }
+    .brand h1 { font-size: 1.5rem; }
+    .brand p { font-size: .8rem; }
     .search-block { min-width: 0; max-width: none; }
-    .ctrl-label   { font-size: .6rem; }
-    .search-inner { padding: 0 10px; }
-    #searchInput  { font-size: .95rem; padding: 8px 0; }
-    #searchBtn    { font-size: .65rem; padding: 0 14px; min-height: 40px; }
-
-    /* AI badge: smaller, inline */
+    #searchBtn { font-size: .65rem; padding: 0 14px; min-height: 40px; }
     .ai-badge { align-self: flex-start; font-size: .52rem; padding: 3px 8px; }
-
-    /* Chips: allow full wrap */
-    .chips-row { gap: 6px; padding-top: 2px; }
-    .chip      { font-size: .82rem; padding: 4px 8px 4px 7px; }
-    .chip-years { display: none; } /* save space on mobile */
-
-    /* Insight bar */
+    .chips-row { gap: 6px; }
+    .chip { font-size: .82rem; padding: 4px 8px 4px 7px; }
+    .chip-years { display: none; }
     #insight { padding: 9px 16px; font-size: .84rem; line-height: 1.4; }
-
-    /* Suggestions panel */
     .suggest-header { padding: 9px 16px 0; }
-    .suggest-cards  { padding: 8px 16px 12px; gap: 8px; }
-    .suggest-card   { width: 148px; padding: 10px 11px; }
-    .sc-name        { font-size: .86rem; }
-    .sc-years       { font-size: .7rem; }
-    .sc-desc        { font-size: .74rem; }
-    .sc-reason      { font-size: .68rem; }
-    .sc-add         { font-size: .55rem; padding: 3px 7px; }
-
-    /* Timeline */
+    .suggest-cards { padding: 8px 16px 12px; gap: 8px; }
+    .suggest-card { width: 148px; padding: 10px 11px; }
     #timeline-container { padding: 16px 0 180px; -webkit-overflow-scrolling: touch; }
-    #timeline-wrap      { padding: 0 16px; }
-
-    /* Name column narrower */
-    th.name-col { width: var(--row-label); min-width: var(--row-label); font-size: .55rem; }
+    #timeline-wrap { padding: 0 16px; }
+    th.name-col { font-size: .55rem; }
     td.name-cell { font-size: .82rem; }
-    .name-inner  { gap: 7px; padding-right: 8px; }
+    .name-inner { gap: 7px; padding-right: 8px; }
     .name-stripe { width: 2px; }
-    .name-sub    { font-size: .68rem; }
-
-    /* Year header: only show every 20 years on mobile to reduce clutter */
-    thead th { font-size: .62rem; height: 20px; }
-
-    /* Event star: slightly bigger tap target */
     .ev-star { font-size: 14px; }
-
-    /* World events row */
-    .we-name-inner > div > div:first-child { font-size: .62rem; }
-    .we-sub { font-size: .66rem; }
-    .we-diamond { width: 8px; height: 8px; }
-
-    /* Tooltip: full-width at bottom on mobile instead of following cursor */
     #tooltip {
-      position: fixed !important;
-      bottom: 0 !important; left: 0 !important; right: 0 !important;
-      top: auto !important;
-      max-width: none !important;
-      width: 100%;
-      border-radius: 12px 12px 0 0;
-      border-left: none; border-right: none; border-bottom: none;
-      border-top: 1px solid var(--gold-dim);
-      padding: 14px 20px 20px;
-      font-size: .92rem;
-      transform: translateY(100%);
-      transition: transform .25s ease, opacity .25s ease;
-      opacity: 1 !important;
-      box-shadow: 0 -8px 32px rgba(0,0,0,.5);
-      z-index: 1000;
+      position: fixed !important; bottom: 0 !important; left: 0 !important; right: 0 !important;
+      top: auto !important; max-width: none !important; width: 100%;
+      border-radius: 12px 12px 0 0; border-left: none; border-right: none; border-bottom: none;
+      border-top: 1px solid var(--gold-dim); padding: 14px 20px 20px; font-size: .92rem;
+      transform: translateY(100%); transition: transform .25s ease, opacity .25s ease;
+      opacity: 1 !important; box-shadow: 0 -8px 32px rgba(0,0,0,.5);
     }
-    #tooltip.on {
-      transform: translateY(0) !important;
-      opacity: 1 !important;
-    }
-    /* Drag handle visual */
-    #tooltip::before {
-      content: '';
-      display: block;
-      width: 36px; height: 4px;
-      background: var(--border);
-      border-radius: 2px;
-      margin: 0 auto 12px;
-    }
-    #tooltip strong { font-size: .82rem; }
-
-    /* Toast: higher on mobile to clear bottom tooltip */
+    #tooltip.on { transform: translateY(0) !important; }
+    #tooltip::before { content: ''; display: block; width: 36px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 12px; }
     #toast { bottom: 80px; }
   }
 
-  /* ═══════════════════════════════════════════════
-     TABLET — 681px – 900px
-  ═══════════════════════════════════════════════ */
+  /* ═══════════════════════════════════
+     TABLET 681–900px
+  ═══════════════════════════════════ */
   @media (min-width: 681px) and (max-width: 900px) {
     :root { --row-label: 160px; --cell-w: 22px; }
     header { padding: 20px 24px 16px; gap: 20px; }
     #insight { padding: 10px 24px; }
     .suggest-header { padding: 10px 24px 0; }
-    .suggest-cards  { padding: 10px 24px 12px; }
-    #timeline-wrap  { padding: 0 24px; }
+    .suggest-cards { padding: 10px 24px 12px; }
+    #timeline-wrap { padding: 0 24px; }
   }
 </style>
 </head>
 <body>
 <div class="wrapper">
 
-<div id="key-banner">
-  <span class="key-label">⚿ Anthropic API Key</span>
-  <input id="keyInput" type="password" placeholder="Paste your key from console.anthropic.com…" autocomplete="off" spellcheck="false">
-  <button id="keySaveBtn">Save & Use</button>
-  <span class="key-note">Get your key at console.anthropic.com → API Keys → Create Key. Stored in this browser session only.</span>
-</div>
-
 <header>
   <div class="brand">
     <h1>CHRONOS</h1>
     <p>Lives in parallel — powered by Claude AI</p>
   </div>
-
-  <div class="search-block" style="position:relative">
+  <div class="search-block">
     <span class="ctrl-label">Add any historical figure</span>
     <div class="search-row">
       <div class="search-inner">
@@ -678,12 +376,7 @@
     </div>
     <div id="suggestions"></div>
   </div>
-
-  <div class="ai-badge">
-    <span class="ai-dot"></span>
-    Powered by Claude AI
-  </div>
-
+  <div class="ai-badge"><span class="ai-dot"></span>Powered by Claude AI</div>
   <div class="chips-row" id="chips"></div>
 </header>
 
@@ -692,7 +385,7 @@
 <div id="suggest-panel">
   <div class="suggest-header">
     <span class="suggest-title">You might also add…</span>
-    <button class="suggest-refresh" id="suggestRefresh" title="Get new suggestions">↻ Refresh</button>
+    <button class="suggest-refresh" id="suggestRefresh">↻ Refresh</button>
     <div class="suggest-spinner" id="suggestSpinner"></div>
   </div>
   <div class="suggest-cards" id="suggestCards"></div>
@@ -712,66 +405,77 @@
 </div>
 
 </div>
-
 <div id="tooltip"></div>
 <div id="toast"></div>
 
 <script>
-// ── API Key management ─────────────────────────────────────────────────────────
-let API_KEY = sessionStorage.getItem('chronos_api_key') || '';
+// ─────────────────────────────────────────────────────────────────────────────
+// API KEY — replace YOUR_KEY_HERE with your Anthropic key
+// ─────────────────────────────────────────────────────────────────────────────
+const API_KEY = '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';
 
-const $keyBanner  = document.getElementById('key-banner');
-const $keyInput   = document.getElementById('keyInput');
-const $keySaveBtn = document.getElementById('keySaveBtn');
-const $toast      = document.getElementById('toast');
-const $tip        = document.getElementById('tooltip');
+// ─────────────────────────────────────────────────────────────────────────────
+// Utilities
+// ─────────────────────────────────────────────────────────────────────────────
+const PALETTE = [
+  '#6baed6','#fd8d3c','#74c476','#9e9ac8','#c9a84c','#3182bd',
+  '#e15759','#f28e2b','#59a14f','#b07aa1','#76b7b2','#ff9da7',
+  '#ffd92f','#4dc9f6','#ea5545','#43aa8b','#c77dff','#e9c46a',
+  '#f4a261','#a8c97f','#7ec8e3','#e879a0','#fc8d59','#8da0cb'
+];
+let palIdx = 0;
+const nextColor = () => PALETTE[palIdx++ % PALETTE.length];
 
-// Toast (defined early so key banner can use it)
+// ─────────────────────────────────────────────────────────────────────────────
+// State
+// ─────────────────────────────────────────────────────────────────────────────
+const PEOPLE  = {};
+const ordered = [];
+let worldEvents   = {};
+let worldRange    = null;
+let worldFetching = false;
+let worldFetchId  = 0;
+let suggestFetchId  = 0;
+let suggestFetching = false;
+let suggestDebounce = null;
+
+// ─────────────────────────────────────────────────────────────────────────────
+// DOM refs
+// ─────────────────────────────────────────────────────────────────────────────
+const $search         = document.getElementById('searchInput');
+const $spinner        = document.getElementById('spinner');
+const $btn            = document.getElementById('searchBtn');
+const $sugg           = document.getElementById('suggestions');
+const $chips          = document.getElementById('chips');
+const $insight        = document.getElementById('insight');
+const $empty          = document.getElementById('empty');
+const $tbl            = document.getElementById('tbl');
+const $thead          = document.getElementById('thead');
+const $tbody          = document.getElementById('tbody');
+const $tip            = document.getElementById('tooltip');
+const $toast          = document.getElementById('toast');
+const $suggestPanel   = document.getElementById('suggest-panel');
+const $suggestCards   = document.getElementById('suggestCards');
+const $suggestRefresh = document.getElementById('suggestRefresh');
+const $suggestSpinner = document.getElementById('suggestSpinner');
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Toast
+// ─────────────────────────────────────────────────────────────────────────────
 let toastTimer;
 function showToast(msg) {
   $toast.textContent = '⚠ ' + msg;
+  $toast.style.borderColor = '';
+  $toast.style.color = '';
   $toast.classList.add('on');
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => $toast.classList.remove('on'), 4500);
 }
 
-function showSuccess(msg) {
-  $toast.textContent = '✓ ' + msg;
-  $toast.style.borderColor = '#4caf76';
-  $toast.style.color = '#a8f0b8';
-  $toast.classList.add('on');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => {
-    $toast.classList.remove('on');
-    $toast.style.borderColor = '';
-    $toast.style.color = '';
-  }, 3000);
-}
-
-function updateKeyBanner() {
-  if (API_KEY) {
-    $keyBanner.classList.add('hidden');
-  } else {
-    $keyBanner.classList.remove('hidden');
-    $keyInput.value = '';
-  }
-}
-
-function saveKey() {
-  const k = $keyInput.value.trim();
-  if (!k) { showToast('Please paste your API key first'); return; }
-  API_KEY = k;
-  sessionStorage.setItem('chronos_api_key', k);
-  $keyBanner.classList.add('hidden');
-  showSuccess('API key saved — ready to search!');
-}
-
-$keySaveBtn.addEventListener('click', saveKey);
-$keyInput.addEventListener('keydown', e => { if (e.key === 'Enter') saveKey(); });
-updateKeyBanner();
-
-// ── Anthropic API helper ───────────────────────────────────────────────────────
-async function hfCall(systemPrompt, userMessage, maxTokens = 1000) {
+// ─────────────────────────────────────────────────────────────────────────────
+// Anthropic API call
+// ─────────────────────────────────────────────────────────────────────────────
+async function aiCall(systemPrompt, userMessage, maxTokens = 1000) {
   const res = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: {
@@ -788,123 +492,73 @@ async function hfCall(systemPrompt, userMessage, maxTokens = 1000) {
     })
   });
   if (!res.ok) {
-    const errBody = await res.json().catch(() => ({}));
-    const msg = errBody?.error?.message || `HTTP ${res.status}`;
-    throw new Error(`API error: ${msg}`);
+    const e = await res.json().catch(() => ({}));
+    throw new Error(e?.error?.message || `HTTP ${res.status}`);
   }
   const data = await res.json();
   const raw = data.content?.find(b => b.type === 'text')?.text ?? '';
   return raw.replace(/```json|```/gi, '').trim();
 }
 
-// ── Colour palette ─────────────────────────────────────────────────────────────
-const PALETTE = [
-  '#6baed6','#fd8d3c','#74c476','#9e9ac8','#c9a84c','#3182bd',
-  '#e15759','#f28e2b','#59a14f','#b07aa1','#76b7b2','#ff9da7',
-  '#ffd92f','#4dc9f6','#ea5545','#43aa8b','#c77dff','#e9c46a',
-  '#f4a261','#a8c97f','#7ec8e3','#e879a0','#fc8d59','#8da0cb'
-];
-let palIdx = 0;
-const nextColor = () => PALETTE[palIdx++ % PALETTE.length];
-
-// ── State ──────────────────────────────────────────────────────────────────────
-const PEOPLE      = {};   // key → {name,birth,death,color,events,alive,description}
-const ordered     = [];   // insertion-ordered keys
-let worldEvents   = {};   // year → event string
-let worldRange    = null; // [yMin, yMax] last fetched range
-let worldFetching = false;
-let worldFetchId  = 0;    // for cancelling stale fetches
-
-let suggestFetchId   = 0;
-let suggestFetching  = false;
-let suggestDebounce  = null;
-
-// ── DOM ────────────────────────────────────────────────────────────────────────
-const $search  = document.getElementById('searchInput');
-const $spinner = document.getElementById('spinner');
-const $btn     = document.getElementById('searchBtn');
-const $sugg    = document.getElementById('suggestions');
-const $chips   = document.getElementById('chips');
-const $insight = document.getElementById('insight');
-const $empty   = document.getElementById('empty');
-const $tbl     = document.getElementById('tbl');
-const $thead   = document.getElementById('thead');
-const $tbody   = document.getElementById('tbody');
-const $suggestPanel   = document.getElementById('suggest-panel');
-const $suggestCards   = document.getElementById('suggestCards');
-const $suggestRefresh = document.getElementById('suggestRefresh');
-const $suggestSpinner = document.getElementById('suggestSpinner');
-
-// ── Claude AI lookup ───────────────────────────────────────────────────────────
-const SYSTEM_PROMPT = `You are a historical data assistant. When given a person's name, respond ONLY with valid JSON — no markdown, no explanation, no code fences.
-
+// ─────────────────────────────────────────────────────────────────────────────
+// System prompts
+// ─────────────────────────────────────────────────────────────────────────────
+const PERSON_PROMPT = `You are a historical data assistant. Respond ONLY with valid JSON, no markdown.
 Return this exact structure:
 {
   "name": "Full commonly-known name",
-  "description": "One-sentence description, e.g. 'German-born theoretical physicist'",
+  "description": "One-sentence description",
   "birth": 1879,
   "death": 1955,
   "alive": false,
   "events": {
-    "1905": "Annus Mirabilis papers: special relativity, photoelectric effect, Brownian motion",
+    "1905": "Annus Mirabilis papers published",
     "1915": "General Theory of Relativity published"
   }
 }
-
 Rules:
-- birth and death are 4-digit integer years (use negative for BCE, e.g. -44 for 44 BC)
-- If the person is alive today, set death to null and alive to true
-- events: include 6–14 of the most significant events, each as "YEAR": "Description"
-- Only include events where you are confident of the specific year
-- If you genuinely don't recognise the person, return: {"error": "Person not found"}
-- Respond with JSON only — nothing else`;
+- birth and death are integer years
+- If alive today set death to null and alive to true
+- Include 6-14 significant events as "YEAR": "Description"
+- If unknown return: {"error": "Person not found"}
+- JSON only, nothing else`;
 
-async function fetchPersonFromClaude(query) {
-  const raw = await hfCall(SYSTEM_PROMPT, query, 1000);
-  return JSON.parse(raw);
-}
-
-// ── World events lookup ────────────────────────────────────────────────────────
-const WE_SYSTEM = `You are a world history assistant. Given a year range, return the most significant and interesting world events within it — wars, revolutions, inventions, discoveries, disasters, cultural milestones. Prioritise events that most people would recognise and find interesting. Spread events throughout the range rather than clustering.
-
+const WORLD_PROMPT = `You are a world history assistant. Given a year range return 15-25 of the most significant world events — wars, revolutions, inventions, discoveries, disasters, cultural milestones.
 Respond ONLY with valid JSON, no markdown:
-{
-  "events": {
-    "1905": "Einstein publishes special relativity; Russian Revolution of 1905",
-    "1914": "World War I begins after assassination of Archduke Franz Ferdinand",
-    "1929": "Wall Street Crash triggers the Great Depression"
-  }
+{"events": {"1914": "World War I begins", "1929": "Wall Street Crash triggers Great Depression"}}
+JSON only.`;
+
+const SUGGEST_PROMPT = `You are a historical advisor. Given people already on a timeline, suggest 7 other famous, notable, or infamous people from roughly the same era. Choose people from DIFFERENT fields — rulers, artists, explorers, philosophers, military leaders, writers, scientists, criminals, revolutionaries.
+Respond ONLY with valid JSON, no markdown:
+{"suggestions": [{"name": "Name", "birth": 1452, "death": 1519, "description": "Short description under 8 words", "reason": "Why interesting, under 12 words"}]}
+JSON only.`;
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Search UI
+// ─────────────────────────────────────────────────────────────────────────────
+$search.addEventListener('input', () => {
+  const q = $search.value.trim();
+  if (q.length >= 2) showQuerySuggestion(q);
+  else closeSugg();
+});
+$search.addEventListener('keydown', e => {
+  if (e.key === 'Enter') { e.preventDefault(); triggerSearch(); }
+  if (e.key === 'Escape') { closeSugg(); $search.blur(); }
+});
+$btn.addEventListener('click', triggerSearch);
+document.addEventListener('click', e => { if (!e.target.closest('.search-block')) closeSugg(); });
+
+function triggerSearch() {
+  const q = $search.value.trim();
+  if (!q) return;
+  closeSugg();
+  $search.value = '';
+  addPerson(q);
 }
 
-Include 15–25 events. JSON only.`;
-
-async function fetchWorldEvents(yMin, yMax) {
-  const fetchId = ++worldFetchId;
-  worldFetching = true;
-  updateWorldRowLoading(true);
-
-  try {
-    const raw  = await hfCall(WE_SYSTEM, `Year range: ${yMin} to ${yMax}`, 1500);
-    if (fetchId !== worldFetchId) return;
-    const json = JSON.parse(raw);
-    if (fetchId !== worldFetchId) return;
-    worldEvents = json.events || {};
-    worldRange  = [yMin, yMax];
-    renderWorldRow();
-  } catch (e) {
-    console.warn('World events fetch failed:', e);
-  } finally {
-    if (fetchId === worldFetchId) {
-      worldFetching = false;
-      updateWorldRowLoading(false);
-    }
-  }
-}
-// We do not search Wikidata; instead we show a "Look up" card for whatever the user typed
 function showQuerySuggestion(q) {
   $sugg.innerHTML = '';
   const already = Object.values(PEOPLE).some(p => p.name.toLowerCase() === q.toLowerCase());
-
   const d = document.createElement('div');
   d.className = 'sug-item' + (already ? ' dimmed' : '');
   d.innerHTML = `
@@ -913,61 +567,44 @@ function showQuerySuggestion(q) {
       <div class="sug-desc">${already ? 'Already on timeline' : 'Look up with Claude AI…'}</div>
     </div>
     <span class="sug-btn">${already ? 'Added' : '+ Add'}</span>`;
-
   if (!already) {
-    d.addEventListener('click', () => {
-      closeSugg();
-      $search.value = '';
-      addPerson(q);
-    });
+    d.addEventListener('click', () => { closeSugg(); $search.value = ''; addPerson(q); });
   }
   $sugg.appendChild(d);
   $sugg.classList.add('on');
 }
 
-// ── Add person ─────────────────────────────────────────────────────────────────
+function closeSugg() { $sugg.classList.remove('on'); $sugg.innerHTML = ''; }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Add person
+// ─────────────────────────────────────────────────────────────────────────────
 async function addPerson(query) {
   if (!query.trim()) return;
-  if (!API_KEY || API_KEY === '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') {
-    $keyBanner.classList.remove('hidden');
-    $keyInput.focus();
-    showToast('Please enter your Anthropic API key first');
-    return;
-  }
+  $spinner.classList.add('on');
+  $btn.disabled = true;
 
-  setSearching(true);
-
-  // Loading chip
   const lc = document.createElement('div');
   lc.className = 'chip-loading';
   lc.innerHTML = `<div class="spinner on"></div><span>Looking up ${query}…</span>`;
   $chips.appendChild(lc);
 
   try {
-    const person = await fetchPersonFromClaude(query);
-
+    const raw    = await aiCall(PERSON_PROMPT, query, 1000);
+    const person = JSON.parse(raw);
     if (person.error) throw new Error(person.error);
     if (!person.birth && person.birth !== 0) throw new Error(`No birth year found for "${query}"`);
-    if (person.birth < 1400) {
-      // Still show them — just warn that column count may be large
-      // We'll allow it but cap ancient figures
-    }
 
-    const key   = person.name + '_' + person.birth;
+    const key = person.name + '_' + person.birth;
     if (PEOPLE[key]) throw new Error(`${person.name} is already on the timeline`);
 
     const color = nextColor();
     PEOPLE[key] = {
-      name:        person.name,
-      description: person.description || '',
-      birth:       person.birth,
-      death:       person.death ?? new Date().getFullYear(),
-      alive:       !!person.alive,
-      color,
-      events:      person.events || {}
+      name: person.name, description: person.description || '',
+      birth: person.birth, death: person.death ?? new Date().getFullYear(),
+      alive: !!person.alive, color, events: person.events || {}
     };
     ordered.push(key);
-
     lc.remove();
     renderChip(key);
     renderTimeline();
@@ -976,25 +613,23 @@ async function addPerson(query) {
     lc.remove();
     showToast(err.message);
   } finally {
-    setSearching(false);
+    $spinner.classList.remove('on');
+    $btn.disabled = false;
   }
-}
-
-function setSearching(on) {
-  $spinner.classList.toggle('on', on);
-  $btn.disabled = on;
 }
 
 function removePerson(key) {
   ordered.splice(ordered.indexOf(key), 1);
   delete PEOPLE[key];
-  document.getElementById(`chip-${CSS.escape(key)}`)?.remove();
+  document.getElementById('chip-' + key.replace(/[^a-z0-9]/gi, '_'))?.remove();
   renderTimeline();
   if (ordered.length) scheduleSuggestions();
   else hideSuggestPanel();
 }
 
-// ── Chip ───────────────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
+// Chips
+// ─────────────────────────────────────────────────────────────────────────────
 function renderChip(key) {
   const p = PEOPLE[key];
   const c = document.createElement('div');
@@ -1010,50 +645,18 @@ function renderChip(key) {
   $chips.appendChild(c);
 }
 
-// ── Search UI ──────────────────────────────────────────────────────────────────
-$search.addEventListener('input', () => {
-  const q = $search.value.trim();
-  if (q.length >= 2) showQuerySuggestion(q);
-  else closeSugg();
-});
-
-$search.addEventListener('keydown', e => {
-  if (e.key === 'Enter') { e.preventDefault(); triggerSearch(); }
-  if (e.key === 'Escape') { closeSugg(); $search.blur(); }
-});
-
-$btn.addEventListener('click', triggerSearch);
-
-function triggerSearch() {
-  const q = $search.value.trim();
-  if (!q) return;
-  closeSugg();
-  $search.value = '';
-  addPerson(q);
-}
-
-document.addEventListener('click', e => {
-  if (!e.target.closest('.search-block')) closeSugg();
-});
-
-function closeSugg() {
-  $sugg.classList.remove('on');
-  $sugg.innerHTML = '';
-}
-
-// ── Timeline render ────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
+// Timeline render
+// ─────────────────────────────────────────────────────────────────────────────
 function renderTimeline() {
   $thead.innerHTML = ''; $tbody.innerHTML = '';
 
   if (!ordered.length) {
-    $empty.style.display = 'block';
-    $tbl.style.display   = 'none';
-    $insight.innerHTML   = 'Search for a historical figure above to begin.';
-    worldEvents = {}; worldRange = null;
-    return;
+    $empty.style.display = 'block'; $tbl.style.display = 'none';
+    $insight.innerHTML = 'Search for a historical figure above to begin.';
+    worldEvents = {}; worldRange = null; return;
   }
-  $empty.style.display = 'none';
-  $tbl.style.display   = '';
+  $empty.style.display = 'none'; $tbl.style.display = '';
 
   const yMin  = Math.min(...ordered.map(id => PEOPLE[id].birth));
   const yMax  = Math.max(...ordered.map(id => PEOPLE[id].death));
@@ -1063,7 +666,7 @@ function renderTimeline() {
   ordered.forEach(id => Object.keys(PEOPLE[id].events || {}).forEach(y => evYears.add(+y)));
   Object.keys(worldEvents).forEach(y => evYears.add(+y));
 
-  // ── Header ──
+  // Header
   const trH = document.createElement('tr');
   const thN = document.createElement('th'); thN.className = 'name-col'; thN.textContent = 'Figure';
   trH.appendChild(thN);
@@ -1075,18 +678,13 @@ function renderTimeline() {
   });
   $thead.appendChild(trH);
 
-  // ── World Events row (first in tbody) ──
-  const weRow = buildWorldRow(years);
-  $tbody.appendChild(weRow);
+  // World events row
+  $tbody.appendChild(buildWorldRow(years));
+  const weSp = document.createElement('tr'); weSp.className = 'world-spacer';
+  const weSpTd = document.createElement('td'); weSpTd.colSpan = years.length + 1;
+  weSp.appendChild(weSpTd); $tbody.appendChild(weSp);
 
-  // Thin spacer between world events and first person
-  const weSpacer = document.createElement('tr');
-  weSpacer.className = 'world-spacer';
-  const weSpacerTd = document.createElement('td'); weSpacerTd.colSpan = years.length + 1;
-  weSpacer.appendChild(weSpacerTd);
-  $tbody.appendChild(weSpacer);
-
-  // ── Person rows ──
+  // Person rows
   ordered.forEach((id, idx) => {
     const p = PEOPLE[id];
     if (idx > 0) {
@@ -1104,10 +702,7 @@ function renderTimeline() {
         <div class="name-stripe" style="background:${p.color}"></div>
         <div>
           <div>${p.name}</div>
-          <span class="name-sub">
-            ${p.birth}–${deathStr}
-            ${evCount ? ` &middot; <span style="color:var(--red)">★</span>&thinsp;${evCount}` : ''}
-          </span>
+          <span class="name-sub">${p.birth}–${deathStr}${evCount ? ` &middot; <span style="color:var(--red)">★</span>&thinsp;${evCount}` : ''}</span>
         </div>
       </div>`;
     tr.appendChild(nc);
@@ -1117,33 +712,24 @@ function renderTimeline() {
       td.className = 'cell';
       if (y % 10 === 9) td.classList.add('dec-line');
       td.style.setProperty('--person-color', p.color);
-
       const alive    = y >= p.birth && y <= p.death;
       const hasEvent = !!(p.events?.[y]);
-
       if (alive) {
         td.classList.add('alive');
         const span = p.death - p.birth, off = y - p.birth;
         if (off > span * .2 && off < span * .8) td.classList.add('peak');
       }
-
       if (hasEvent) {
         const star = document.createElement('div');
         star.className = 'ev-star'; star.textContent = '★';
         star.addEventListener('mouseenter', e => { e.stopPropagation(); tipEvent(e, id, y); });
         star.addEventListener('mouseleave', hideTip);
-        star.addEventListener('touchstart', e => {
-          e.stopPropagation(); e.preventDefault();
-          tipEvent(e.touches[0], id, y);
-        }, { passive: false });
+        star.addEventListener('touchstart', e => { e.stopPropagation(); e.preventDefault(); tipEvent(e.touches[0], id, y); }, { passive: false });
         td.appendChild(star);
       }
-
       td.addEventListener('mouseenter', e => tipCell(e, id, y));
       td.addEventListener('mouseleave', hideTip);
-      td.addEventListener('touchstart', e => {
-        if (!hasEvent) tipCell(e.touches[0], id, y);
-      }, { passive: true });
+      td.addEventListener('touchstart', e => { if (!hasEvent) tipCell(e.touches[0], id, y); }, { passive: true });
       tr.appendChild(td);
     });
 
@@ -1151,96 +737,72 @@ function renderTimeline() {
   });
 
   updateInsight();
-
-  // Fetch world events if range changed
-  if (!worldRange || worldRange[0] !== yMin || worldRange[1] !== yMax) {
-    fetchWorldEvents(yMin, yMax);
-  }
+  if (!worldRange || worldRange[0] !== yMin || worldRange[1] !== yMax) fetchWorldEvents(yMin, yMax);
 }
 
-// Build (or rebuild) the world events <tr>
+// ─────────────────────────────────────────────────────────────────────────────
+// World events row
+// ─────────────────────────────────────────────────────────────────────────────
 function buildWorldRow(years) {
-  const tr = document.createElement('tr');
-  tr.className = 'world-row';
-  tr.id = 'world-events-row';
-
-  // Name cell
-  const nc = document.createElement('td');
-  nc.className = 'we-name-cell';
+  const tr = document.createElement('tr'); tr.className = 'world-row'; tr.id = 'world-events-row';
+  const nc = document.createElement('td'); nc.className = 'we-name-cell';
   const weCount = Object.keys(worldEvents).length;
-  nc.innerHTML = `
-    <div class="we-name-inner">
-      <div class="we-stripe"></div>
-      <div>
-        <div>World Events</div>
-        <span class="we-sub">${worldFetching ? 'Loading…' : weCount ? `${weCount} events` : 'Fetching…'}</span>
-      </div>
-    </div>`;
+  nc.innerHTML = `<div class="we-name-inner"><div class="we-stripe"></div><div><div>World Events</div><span class="we-sub">${worldFetching ? 'Loading…' : weCount ? `${weCount} events` : 'Fetching…'}</span></div></div>`;
   tr.appendChild(nc);
-
   years.forEach((y, i) => {
-    const td = document.createElement('td');
-    td.className = 'we-cell';
+    const td = document.createElement('td'); td.className = 'we-cell';
     if (y % 10 === 9) td.classList.add('dec-line');
-    td.dataset.year = y;
-
     const hasEvent = !!(worldEvents[y]);
-
     if (hasEvent) {
-      const diamond = document.createElement('div');
-      diamond.className = 'we-diamond';
-      diamond.addEventListener('mouseenter', e => { e.stopPropagation(); tipWorldEvent(e, y); });
-      diamond.addEventListener('mouseleave', hideTip);
-      diamond.addEventListener('touchstart', e => {
-        e.stopPropagation(); e.preventDefault();
-        tipWorldEvent(e.touches[0], y);
-      }, { passive: false });
-      td.appendChild(diamond);
-    } else if (worldFetching) {
-      // Shimmer placeholder for some cells while loading
-      if (i % 7 === 0) {
-        const shimmer = document.createElement('div');
-        shimmer.className = 'we-loading';
-        shimmer.style.setProperty('--d', `${(i % 5) * 0.2}s`);
-        td.appendChild(shimmer);
-      }
+      const d = document.createElement('div'); d.className = 'we-diamond';
+      d.addEventListener('mouseenter', e => { e.stopPropagation(); tipWorldEvent(e, y); });
+      d.addEventListener('mouseleave', hideTip);
+      d.addEventListener('touchstart', e => { e.stopPropagation(); e.preventDefault(); tipWorldEvent(e.touches[0], y); }, { passive: false });
+      td.appendChild(d);
+    } else if (worldFetching && i % 7 === 0) {
+      const s = document.createElement('div'); s.className = 'we-loading';
+      s.style.setProperty('--d', `${(i % 5) * 0.2}s`); td.appendChild(s);
     }
-
-    td.addEventListener('mouseenter', e => { if (!worldEvents[y]) hideTip(); });
     tr.appendChild(td);
   });
-
   return tr;
 }
 
-// Re-render just the world events row in place (after fetch completes)
 function renderWorldRow() {
   const existing = document.getElementById('world-events-row');
   if (!existing) { renderTimeline(); return; }
-
-  // Rebuild with current years
   const yMin  = Math.min(...ordered.map(id => PEOPLE[id].birth));
   const yMax  = Math.max(...ordered.map(id => PEOPLE[id].death));
   const years = Array.from({ length: yMax - yMin + 1 }, (_, i) => yMin + i);
-
-  const newRow = buildWorldRow(years);
-  existing.replaceWith(newRow);
-
-  // Also update ev-yr highlights in header now we have world events
+  existing.replaceWith(buildWorldRow(years));
   const weYears = new Set(Object.keys(worldEvents).map(Number));
-  $thead.querySelectorAll('th:not(.name-col)').forEach((th, i) => {
-    if (weYears.has(years[i])) th.classList.add('ev-yr');
-  });
+  $thead.querySelectorAll('th:not(.name-col)').forEach((th, i) => { if (weYears.has(years[i])) th.classList.add('ev-yr'); });
 }
 
 function updateWorldRowLoading(loading) {
-  const nc = document.querySelector('#world-events-row .we-name-cell');
-  if (!nc) return;
-  const sub = nc.querySelector('.we-sub');
+  const sub = document.querySelector('#world-events-row .we-sub');
   if (sub) sub.textContent = loading ? 'Loading…' : `${Object.keys(worldEvents).length} events`;
 }
 
-// ── Insight ────────────────────────────────────────────────────────────────────
+async function fetchWorldEvents(yMin, yMax) {
+  const fetchId = ++worldFetchId;
+  worldFetching = true; updateWorldRowLoading(true);
+  try {
+    const raw  = await aiCall(WORLD_PROMPT, `Year range: ${yMin} to ${yMax}`, 1500);
+    if (fetchId !== worldFetchId) return;
+    const json = JSON.parse(raw);
+    if (fetchId !== worldFetchId) return;
+    worldEvents = json.events || {}; worldRange = [yMin, yMax];
+    renderWorldRow();
+  } catch (e) { console.warn('World events fetch failed:', e); }
+  finally {
+    if (fetchId === worldFetchId) { worldFetching = false; updateWorldRowLoading(false); }
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Insight bar
+// ─────────────────────────────────────────────────────────────────────────────
 function updateInsight() {
   if (ordered.length < 2) {
     $insight.innerHTML = ordered.length === 1
@@ -1264,126 +826,43 @@ function updateInsight() {
   $insight.innerHTML = parts.join(' &nbsp;·&nbsp; ');
 }
 
-// ── Tooltips ───────────────────────────────────────────────────────────────────
-function tipCell(e, id, year) {
-  const p = PEOPLE[id];
-  const alive = year >= p.birth && year <= p.death;
-  let h = `<strong>${p.name}</strong><div style="color:var(--muted);font-size:.78rem;">Year ${year}</div>`;
-  if (alive) h += `<div>Age <span style="color:var(--gold)">${year - p.birth}</span></div>`;
-  else h += `<div style="color:var(--muted);font-style:italic;">${year < p.birth ? 'Not yet born' : 'Deceased'}</div>`;
-  showTip(h, e);
+// ─────────────────────────────────────────────────────────────────────────────
+// Suggestions panel
+// ─────────────────────────────────────────────────────────────────────────────
+function scheduleSuggestions() {
+  clearTimeout(suggestDebounce);
+  suggestDebounce = setTimeout(() => fetchSuggestions(), 600);
 }
-
-function tipEvent(e, id, year) {
-  const p = PEOPLE[id];
-  let h = `<strong>${p.name}</strong>`;
-  h += `<div style="color:var(--muted);font-size:.78rem;margin-bottom:5px;">${year} &middot; Age <span style="color:var(--gold)">${year - p.birth}</span></div>`;
-  h += `<div style="display:flex;gap:6px;align-items:flex-start;">
-    <span style="color:var(--red);flex-shrink:0;font-size:1rem;line-height:1.2;">★</span>
-    <span style="font-style:italic;">${p.events[year]}</span>
-  </div>`;
-  showTip(h, e);
-}
-
-function tipWorldEvent(e, year) {
-  let h = `<strong style="color:var(--gold)">World Event · ${year}</strong>`;
-  h += `<div style="display:flex;gap:6px;align-items:flex-start;margin-top:4px;">
-    <span style="color:var(--gold);flex-shrink:0;font-size:1rem;line-height:1.2;">◆</span>
-    <span style="font-style:italic;">${worldEvents[year]}</span>
-  </div>`;
-  showTip(h, e);
-}
-
-
-function showTip(html, e) {
-  $tip.innerHTML = html;
-  if (isMobile()) {
-    // Bottom-sheet style on mobile — no cursor positioning needed
-    $tip.classList.add('on');
-  } else {
-    moveTip(e);
-    $tip.classList.add('on');
-  }
-}
-function hideTip() { $tip.classList.remove('on'); }
-
-const isMobile = () => window.innerWidth <= 680;
-
-document.addEventListener('mousemove', e => {
-  if ($tip.classList.contains('on') && !isMobile()) moveTip(e);
-});
-
-// Tap anywhere outside tooltip to dismiss on mobile
-document.addEventListener('touchstart', e => {
-  if ($tip.classList.contains('on') && !$tip.contains(e.target)) {
-    hideTip();
-  }
-}, { passive: true });
-
-function moveTip(e) {
-  $tip.style.left = Math.min(e.clientX + 16, window.innerWidth - 290) + 'px';
-  $tip.style.top  = Math.max(e.clientY - 10, 8) + 'px';
-}
-
-// ── People suggestions panel ───────────────────────────────────────────────────
-const SUGGEST_SYSTEM = `You are a historical advisor. Given a list of people already on a timeline, suggest 7 other famous, notable, or infamous people from roughly the same era who would be interesting additions. Deliberately choose people from DIFFERENT fields than those already listed — mix in rulers, artists, explorers, philosophers, military leaders, writers, scientists, inventors, religious figures, criminals, revolutionaries, etc.
-
-Respond ONLY with valid JSON, no markdown:
-{
-  "suggestions": [
-    {
-      "name": "Exactly how the person is commonly known",
-      "birth": 1452,
-      "death": 1519,
-      "description": "Italian Renaissance polymath — painter, sculptor, inventor",
-      "reason": "Exact contemporary of Columbus; lived through the same golden age of exploration"
-    }
-  ]
-}
-
-Rules: birth/death are integer years; if still alive set death to null. Keep description under 8 words. Keep reason under 12 words. JSON only.`;
+$suggestRefresh.addEventListener('click', () => fetchSuggestions(true));
 
 async function fetchSuggestions(force = false) {
   if (!ordered.length) { hideSuggestPanel(); return; }
   if (suggestFetching && !force) return;
-
   const fetchId = ++suggestFetchId;
-  suggestFetching = true;
-  showSuggestLoading();
-
-  const names    = ordered.map(k => PEOPLE[k].name);
-  const yMin     = Math.min(...ordered.map(k => PEOPLE[k].birth));
-  const yMax     = Math.max(...ordered.map(k => PEOPLE[k].death));
-
+  suggestFetching = true; showSuggestLoading();
+  const names = ordered.map(k => PEOPLE[k].name);
+  const yMin  = Math.min(...ordered.map(k => PEOPLE[k].birth));
+  const yMax  = Math.max(...ordered.map(k => PEOPLE[k].death));
   try {
-    const raw  = await hfCall(SUGGEST_SYSTEM, `People on timeline: ${names.join(', ')}. Era: ${yMin}–${yMax}.`, 1200);
+    const raw  = await aiCall(SUGGEST_PROMPT, `People on timeline: ${names.join(', ')}. Era: ${yMin}–${yMax}.`, 1200);
     if (fetchId !== suggestFetchId) return;
     const json = JSON.parse(raw);
     if (fetchId !== suggestFetchId) return;
     renderSuggestCards(json.suggestions || []);
   } catch (e) {
     if (fetchId === suggestFetchId) renderSuggestCards([]);
-    console.warn('Suggestions fetch failed:', e);
   } finally {
-    if (fetchId === suggestFetchId) {
-      suggestFetching = false;
-      $suggestSpinner.classList.remove('on');
-      $suggestRefresh.disabled = false;
-    }
+    if (fetchId === suggestFetchId) { suggestFetching = false; $suggestSpinner.classList.remove('on'); $suggestRefresh.disabled = false; }
   }
 }
 
 function showSuggestLoading() {
-  $suggestPanel.classList.add('on');
-  $suggestSpinner.classList.add('on');
-  $suggestRefresh.disabled = true;
-  // Show 7 skeleton cards
+  $suggestPanel.classList.add('on'); $suggestSpinner.classList.add('on'); $suggestRefresh.disabled = true;
   $suggestCards.innerHTML = '';
   for (let i = 0; i < 7; i++) {
-    const card = document.createElement('div');
-    card.className = 'suggest-card skeleton';
+    const card = document.createElement('div'); card.className = 'suggest-card skeleton';
     card.innerHTML = `
-      <div class="skeleton-line" style="height:14px;width:${70 + (i%3)*20}%;margin-bottom:4px"></div>
+      <div class="skeleton-line" style="height:14px;width:${70+(i%3)*20}%;margin-bottom:4px"></div>
       <div class="skeleton-line" style="height:10px;width:40%;margin-bottom:8px"></div>
       <div class="skeleton-line" style="height:10px;width:90%;margin-bottom:3px"></div>
       <div class="skeleton-line" style="height:10px;width:75%"></div>`;
@@ -1394,14 +873,12 @@ function showSuggestLoading() {
 function renderSuggestCards(suggestions) {
   $suggestCards.innerHTML = '';
   if (!suggestions.length) { hideSuggestPanel(); return; }
-
   $suggestPanel.classList.add('on');
-  const existingNames = new Set(ordered.map(k => PEOPLE[k].name.toLowerCase()));
-
+  const existing = new Set(ordered.map(k => PEOPLE[k].name.toLowerCase()));
   suggestions.forEach((s, i) => {
-    const alreadyAdded = existingNames.has(s.name.toLowerCase());
-    const card = document.createElement('div');
-    card.className = 'suggest-card' + (alreadyAdded ? ' added' : '');
+    const added = existing.has(s.name.toLowerCase());
+    const card  = document.createElement('div');
+    card.className = 'suggest-card' + (added ? ' added' : '');
     card.style.animationDelay = `${i * 0.04}s`;
     const deathStr = s.death ? s.death : 'present';
     card.innerHTML = `
@@ -1409,9 +886,8 @@ function renderSuggestCards(suggestions) {
       <div class="sc-years">${s.birth} – ${deathStr}</div>
       <div class="sc-desc">${s.description}</div>
       ${s.reason ? `<div class="sc-reason">${s.reason}</div>` : ''}
-      <button class="sc-add">${alreadyAdded ? '✓ Added' : '+ Add to timeline'}</button>`;
-
-    if (!alreadyAdded) {
+      <button class="sc-add">${added ? '✓ Added' : '+ Add to timeline'}</button>`;
+    if (!added) {
       card.addEventListener('click', () => {
         card.classList.add('added');
         card.querySelector('.sc-add').textContent = '✓ Added';
@@ -1422,18 +898,40 @@ function renderSuggestCards(suggestions) {
   });
 }
 
-function hideSuggestPanel() {
-  $suggestPanel.classList.remove('on');
-  $suggestCards.innerHTML = '';
+function hideSuggestPanel() { $suggestPanel.classList.remove('on'); $suggestCards.innerHTML = ''; }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Tooltips
+// ─────────────────────────────────────────────────────────────────────────────
+function tipCell(e, id, year) {
+  const p = PEOPLE[id]; const alive = year >= p.birth && year <= p.death;
+  let h = `<strong>${p.name}</strong><div style="color:var(--muted);font-size:.78rem;">Year ${year}</div>`;
+  if (alive) h += `<div>Age <span style="color:var(--gold)">${year - p.birth}</span></div>`;
+  else h += `<div style="color:var(--muted);font-style:italic;">${year < p.birth ? 'Not yet born' : 'Deceased'}</div>`;
+  showTip(h, e);
+}
+function tipEvent(e, id, year) {
+  const p = PEOPLE[id];
+  let h = `<strong>${p.name}</strong>`;
+  h += `<div style="color:var(--muted);font-size:.78rem;margin-bottom:5px;">${year} &middot; Age <span style="color:var(--gold)">${year - p.birth}</span></div>`;
+  h += `<div style="display:flex;gap:6px;align-items:flex-start;"><span style="color:var(--red);flex-shrink:0;">★</span><span style="font-style:italic;">${p.events[year]}</span></div>`;
+  showTip(h, e);
+}
+function tipWorldEvent(e, year) {
+  let h = `<strong style="color:var(--gold)">World Event · ${year}</strong>`;
+  h += `<div style="display:flex;gap:6px;align-items:flex-start;margin-top:4px;"><span style="color:var(--gold);flex-shrink:0;">◆</span><span style="font-style:italic;">${worldEvents[year]}</span></div>`;
+  showTip(h, e);
 }
 
-function scheduleSuggestions() {
-  clearTimeout(suggestDebounce);
-  suggestDebounce = setTimeout(() => fetchSuggestions(), 600);
+const isMobile = () => window.innerWidth <= 680;
+function showTip(html, e) { $tip.innerHTML = html; if (!isMobile()) moveTip(e); $tip.classList.add('on'); }
+function hideTip() { $tip.classList.remove('on'); }
+document.addEventListener('mousemove', e => { if ($tip.classList.contains('on') && !isMobile()) moveTip(e); });
+document.addEventListener('touchstart', e => { if ($tip.classList.contains('on') && !$tip.contains(e.target)) hideTip(); }, { passive: true });
+function moveTip(e) {
+  $tip.style.left = Math.min(e.clientX + 16, window.innerWidth - 290) + 'px';
+  $tip.style.top  = Math.max(e.clientY - 10, 8) + 'px';
 }
-
-$suggestRefresh.addEventListener('click', () => fetchSuggestions(true));
-
 </script>
 </body>
 </html>
