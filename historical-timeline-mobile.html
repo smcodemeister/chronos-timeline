@@ -286,6 +286,26 @@
   }
   @keyframes wePulse { 0%,100%{opacity:.2} 50%{opacity:.6} }
 
+  /* ── Location badge ── */
+  .loc-badge {
+    position: absolute;
+    top: 2px; left: 50%;
+    transform: translateX(-50%);
+    font-size: 7px;
+    font-family: 'Cinzel', serif;
+    font-weight: 600;
+    letter-spacing: .02em;
+    line-height: 1;
+    color: #fff;
+    background: var(--loc-color, #666);
+    border-radius: 2px;
+    padding: 1px 2px;
+    pointer-events: none;
+    z-index: 4;
+    white-space: nowrap;
+    opacity: .92;
+  }
+
   /* ── Tooltip ── */
   #tooltip {
     position: fixed; background: var(--card); border: 1px solid var(--gold-dim);
@@ -523,12 +543,18 @@ Return this exact structure:
   "events": {
     "1905": "Annus Mirabilis papers published",
     "1915": "General Theory of Relativity published"
+  },
+  "locations": {
+    "1879": {"code": "DE", "label": "Germany", "color": "#6baed6"},
+    "1914": {"code": "CH", "label": "Switzerland", "color": "#74c476"},
+    "1933": {"code": "US", "label": "United States", "color": "#fd8d3c"}
   }
 }
 Rules:
 - birth and death are integer years
 - If alive today set death to null and alive to true
 - Include 6-14 significant events as "YEAR": "Description"
+- locations: include ONLY years when the person MOVED to a new notable location. Each entry is the START year of that location period. Use 2-letter ISO country codes. Choose distinct colours per location using hex codes. Only include locations that lasted a meaningful time or are historically significant. Omit brief stops/visits.
 - If unknown return: {"error": "Person not found"}
 - JSON only, nothing else`;
 
@@ -611,7 +637,8 @@ async function addPerson(query) {
     PEOPLE[key] = {
       name: person.name, description: person.description || '',
       birth: person.birth, death: person.death ?? new Date().getFullYear(),
-      alive: !!person.alive, color, events: person.events || {}
+      alive: !!person.alive, color, events: person.events || {},
+      locations: person.locations || {}
     };
     ordered.push(key);
     lc.remove();
@@ -652,6 +679,20 @@ function renderChip(key) {
     <button class="chip-x" title="Remove">✕</button>`;
   c.querySelector('.chip-x').addEventListener('click', () => removePerson(key));
   $chips.appendChild(c);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Location helper — find which location applies for a given year
+// ─────────────────────────────────────────────────────────────────────────────
+function getLocationForYear(person, year) {
+  const locs = person.locations || {};
+  const keys = Object.keys(locs).map(Number).sort((a, b) => a - b);
+  let current = null;
+  for (const k of keys) {
+    if (year >= k) current = locs[k];
+    else break;
+  }
+  return current; // {code, label, color} or null
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -723,6 +764,8 @@ function renderTimeline() {
       td.style.setProperty('--person-color', p.color);
       const alive    = y >= p.birth && y <= p.death;
       const hasEvent = !!(p.events?.[y]);
+      const loc      = alive ? getLocationForYear(p, y) : null;
+
       if (alive) {
         td.classList.add('alive');
         const span = p.death - p.birth, off = y - p.birth;
@@ -736,9 +779,16 @@ function renderTimeline() {
         star.addEventListener('touchstart', e => { e.stopPropagation(); e.preventDefault(); tipEvent(e.touches[0], id, y); }, { passive: false });
         td.appendChild(star);
       }
-      td.addEventListener('mouseenter', e => tipCell(e, id, y));
+      if (loc) {
+        const badge = document.createElement('div');
+        badge.className = 'loc-badge';
+        badge.textContent = loc.code;
+        badge.style.setProperty('--loc-color', loc.color || '#555');
+        td.appendChild(badge);
+      }
+      td.addEventListener('mouseenter', e => tipCell(e, id, y, loc));
       td.addEventListener('mouseleave', hideTip);
-      td.addEventListener('touchstart', e => { if (!hasEvent) tipCell(e.touches[0], id, y); }, { passive: true });
+      td.addEventListener('touchstart', e => { if (!hasEvent) tipCell(e.touches[0], id, y, loc); }, { passive: true });
       tr.appendChild(td);
     });
 
@@ -912,11 +962,18 @@ function hideSuggestPanel() { $suggestPanel.classList.remove('on'); $suggestCard
 // ─────────────────────────────────────────────────────────────────────────────
 // Tooltips
 // ─────────────────────────────────────────────────────────────────────────────
-function tipCell(e, id, year) {
+function tipCell(e, id, year, loc) {
   const p = PEOPLE[id]; const alive = year >= p.birth && year <= p.death;
   let h = `<strong>${p.name}</strong><div style="color:var(--muted);font-size:.78rem;">Year ${year}</div>`;
-  if (alive) h += `<div>Age <span style="color:var(--gold)">${year - p.birth}</span></div>`;
-  else h += `<div style="color:var(--muted);font-style:italic;">${year < p.birth ? 'Not yet born' : 'Deceased'}</div>`;
+  if (alive) {
+    h += `<div>Age <span style="color:var(--gold)">${year - p.birth}</span></div>`;
+    if (loc) h += `<div style="margin-top:4px;display:flex;align-items:center;gap:6px;">
+      <span style="background:${loc.color};color:#fff;font-size:.65rem;padding:1px 4px;border-radius:2px;font-family:'Cinzel',serif;">${loc.code}</span>
+      <span style="color:var(--muted);font-style:italic;">${loc.label}</span>
+    </div>`;
+  } else {
+    h += `<div style="color:var(--muted);font-style:italic;">${year < p.birth ? 'Not yet born' : 'Deceased'}</div>`;
+  }
   showTip(h, e);
 }
 function tipEvent(e, id, year) {
