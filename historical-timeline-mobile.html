@@ -461,6 +461,7 @@ const nextColor = () => PALETTE[palIdx++ % PALETTE.length];
 const PEOPLE  = {};
 const ordered = [];
 let worldEvents   = {};
+let worldCountries = {};
 let worldRange    = null;
 let worldFetching = false;
 let worldFetchId  = 0;
@@ -560,8 +561,11 @@ Rules:
 
 const WORLD_PROMPT = `You are a world history assistant. Given a year range return 15-25 of the most significant world events — wars, revolutions, inventions, discoveries, disasters, cultural milestones.
 Respond ONLY with valid JSON, no markdown:
-{"events": {"1914": "World War I begins", "1929": "Wall Street Crash triggers Great Depression"}}
-JSON only.`;
+{
+  "events": {"1914": "World War I begins", "1929": "Wall Street Crash triggers Great Depression"},
+  "countries": {"1914": "RS", "1929": "US"}
+}
+The "countries" field maps the same years to a 2-letter ISO country code representing the primary country where the event occurred or originated. JSON only.`;
 
 const SUGGEST_PROMPT = `You are a historical advisor. Given people already on a timeline, suggest 7 other famous, notable, or infamous people from roughly the same era. Choose people from DIFFERENT fields — rulers, artists, explorers, philosophers, military leaders, writers, scientists, criminals, revolutionaries.
 Respond ONLY with valid JSON, no markdown:
@@ -704,7 +708,7 @@ function renderTimeline() {
   if (!ordered.length) {
     $empty.style.display = 'block'; $tbl.style.display = 'none';
     $insight.innerHTML = 'Search for a historical figure above to begin.';
-    worldEvents = {}; worldRange = null; return;
+    worldEvents = {}; worldCountries = {}; worldRange = null; return;
   }
   $empty.style.display = 'none'; $tbl.style.display = '';
 
@@ -851,7 +855,7 @@ async function fetchWorldEvents(yMin, yMax) {
     if (fetchId !== worldFetchId) return;
     const json = JSON.parse(raw);
     if (fetchId !== worldFetchId) return;
-    worldEvents = json.events || {}; worldRange = [yMin, yMax];
+    worldEvents = json.events || {}; worldCountries = json.countries || {}; worldRange = [yMin, yMax];
     renderWorldRow();
   } catch (e) { console.warn('World events fetch failed:', e); }
   finally {
@@ -983,9 +987,19 @@ function tipEvent(e, id, year) {
   h += `<div style="display:flex;gap:6px;align-items:flex-start;"><span style="color:var(--red);flex-shrink:0;">★</span><span style="font-style:italic;">${p.events[year]}</span></div>`;
   showTip(h, e);
 }
+// Convert 2-letter ISO code to flag emoji
+function countryFlag(cc) {
+  if (!cc || cc.length !== 2) return '';
+  return [...cc.toUpperCase()].map(c => String.fromCodePoint(0x1F1E6 + c.charCodeAt(0) - 65)).join('');
+}
+
 function tipWorldEvent(e, year) {
+  const flag = countryFlag(worldCountries[year]);
   let h = `<strong style="color:var(--gold)">World Event · ${year}</strong>`;
-  h += `<div style="display:flex;gap:6px;align-items:flex-start;margin-top:4px;"><span style="color:var(--gold);flex-shrink:0;">◆</span><span style="font-style:italic;">${worldEvents[year]}</span></div>`;
+  h += `<div style="display:flex;gap:8px;align-items:flex-start;margin-top:4px;">
+    <span style="color:var(--gold);flex-shrink:0;">◆</span>
+    <span style="font-style:italic;">${flag ? flag + ' ' : ''}${worldEvents[year]}</span>
+  </div>`;
   showTip(h, e);
 }
 
